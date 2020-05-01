@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './question.dart';
+
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -26,15 +28,10 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> _scoreKeeper = [];
-  List<String> _questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
-  ];
-  List<bool> _answers = [
-    false,
-    true,
-    true,
+  List<Question> _questions = [
+    Question('You can lead a cow down stairs but not up stairs.', false,),
+    Question('Approximately one quarter of human bones are in the feet.', true,),
+    Question('A slug\'s blood is green.', true,),
   ];
   int _questionIndex = 0;
 
@@ -42,14 +39,14 @@ class _QuizPageState extends State<QuizPage> {
   Icon incorrectIcon = Icon(Icons.close, color: Colors.red);
 
   void _submitAnswer(bool answer) {
-    if (answer == _answers[_questionIndex]) {
+    if (answer == _questions[_questionIndex].answer) {
       _scoreKeeper.add(correctIcon);
     } else {
       _scoreKeeper.add(incorrectIcon);
     }
 
     setState(() {
-      _questionIndex == 2 ? _questionIndex = 0 : _questionIndex++;
+      _questionIndex == (_questions.length - 1) ? _questionIndex = 0 : _questionIndex++;
     });
   }
 
@@ -65,7 +62,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                _questions[_questionIndex],
+                _questions[_questionIndex].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
